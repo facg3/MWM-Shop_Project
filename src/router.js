@@ -1,12 +1,13 @@
 const handlers = require('./handler.js');
 
 const router = (request, response) => {
-  const url = [request.url];
+  const url = request.url;
+  console.log(url);
   if (url === '/') {
     handlers.homepage(request, response);
-  } else if (url.startsWith('/public')) {
+  } else if (url.startsWith('public')) {
     handlers.handler(request, response);
-  } else if (url === '/user') {
+  } else if (url === 'user') {
     handlers.userpage(request,response);
   } else {
     response.writeHead(404);

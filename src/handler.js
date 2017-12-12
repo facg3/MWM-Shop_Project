@@ -1,4 +1,3 @@
-
 const req = require('request');
 const fs = require('fs');
 const path = require('path');
@@ -53,5 +52,4 @@ module.exports = {
   homepage,
   handler,
   userpage
-
 };
