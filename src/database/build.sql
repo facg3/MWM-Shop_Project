@@ -1,19 +1,26 @@
 BEGIN;
-create table user(
-  name primary key ,
-  ddkl,ds,;c,sd,;,s
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL
 
 );
 
-create table user2(
-  name primary key ,
-  ddkl,ds,;c,sd,;,s
-
+CREATE TABLE IF NOT EXISTS products (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    image TEXT,
+    size  INTEGER,
+    price  INTEGER
 );
-create table user10(
-  name primary key ,
-  ddkl,ds,;c,sd,;,s
 
-);
+CREATE TABLE IF NOT EXISTS cart(
+  user_id REFERENCES users(id),
+  product_id REFERENCES products(id)
+  PRIMARY KEY (user_id,product_id)
+)
+
+
+
+
 
 COMMIT;
