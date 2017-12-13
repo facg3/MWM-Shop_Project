@@ -14,11 +14,7 @@ function fetch(url, data, callback) {
     xhr.send();
   }
 }
-
-
-function getproduct() {
-  url = '/products';
-  fetch(url,null,(response)=>{
-    console.log(response);
-  });
-}
+//
+// if(typeof module !== 'undefined'){
+//   module.exports = getproduct;
+// }
