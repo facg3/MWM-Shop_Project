@@ -1,6 +1,7 @@
 const req = require('request');
 const fs = require('fs');
 const path = require('path');
+const queries = require('./database/queries');
 
 const homepage = (request, response) => {
   fs.readFile(path.join(__dirname, '..', 'public', 'index.html'), (err, file) => {
@@ -17,7 +18,9 @@ const homepage = (request, response) => {
 
 };
 const products = (request, response) =>{
-      response.end("hello");
+  queries.allProducts((result) =>{
+    response.end(JSON.stringify(result));
+  })
 };
 
 
@@ -29,6 +32,9 @@ const handler = (request, response) => {
     css: 'text/css',
     js: 'application/javascript',
     json: 'application/json',
+    ico: 'image/x-icon',
+    jpg: 'image/jpeg',
+    png: 'image/png'
   };
 
   fs.readFile(path.join(__dirname, '..', url), (err, file) => {
