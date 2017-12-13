@@ -43,14 +43,15 @@ npm run watch
 
 ### System Structure
 
-
+![pic1](https://scontent.fjrs2-1.fna.fbcdn.net/v/t34.0-12/25324095_324869627989499_1764268163_n.jpg?oh=4e312c6bf1c4e29460723447271d56d3&oe=5A33AB92)
 
 ### SCHEMA Diagram
 
+![pic2](https://scontent.fjrs2-1.fna.fbcdn.net/v/t34.0-12/25323225_324869637989498_403772973_n.jpg?oh=b752aaf538509e74a923f2720c40a60d&oe=5A332841)
 
 
-
-### ER Digram
+### TAPLES
+![pic3](https://scontent.fjrs2-1.fna.fbcdn.net/v/t34.0-12/25323896_324869631322832_1144254667_n.jpg?oh=6778705dadc831048b54c06d0d335ad8&oe=5A33A246)
 
 
 ## Team :sunglasses: :
