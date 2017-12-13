@@ -8,13 +8,19 @@ fetch('/products',null,(response)=>{
     column.setAttribute('class','column');
     var img = document.createElement('img');
     img.src='public/css/'+element.image;
-    var name = document.createElement('h1');
+    var card = document.createElement('div');
+    card.setAttribute('class','card');
+    var container = document.createElement('div');
+    container.setAttribute('class','container');
+    var name = document.createElement('h2');
     var price = document.createElement('h2');
     name.textContent = element.name;
     price.textContent = element.price;
-    column.appendChild(img);
-    column.appendChild(name);
-    column.appendChild(price);
+    card.appendChild(img);
+    container.appendChild(name);
+    container.appendChild(price);
+    card.appendChild(container);
+    column.appendChild(card);
     row.appendChild(column);
     wrapper.appendChild(row);
   })
