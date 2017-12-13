@@ -9,13 +9,20 @@ const homepage = (request, response) => {
       response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
     } else {
       response.writeHead(200, { 'content-type': 'text/html' });
+
       response.end(file);
     }
+
   });
+
+};
+const products = (request, response) =>{
+      response.end("hello");
 };
 
+
 const handler = (request, response) => {
-  const url = [request.url];
+  const url = request.url;
   const extension = url.split('.')[1];
   const filetype = {
     html: 'text/html',
@@ -41,8 +48,8 @@ const userpage = (request, response) => {
       response.writeHead(500, { 'content-type': 'text/html' });
       response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
     } else {
-      response.writeHead(200, { 'content-type': 'text/html' });
-      response.end('userpage');
+      response.writeHead(200, { 'content-type' : 'text/html' });
+      response.end(file);
     }
   });
 };
@@ -51,5 +58,6 @@ const userpage = (request, response) => {
 module.exports = {
   homepage,
   handler,
+  products,
   userpage
 };
