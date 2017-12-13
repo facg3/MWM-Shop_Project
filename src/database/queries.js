@@ -4,6 +4,7 @@ const allProducts=  (callback) =>{
       connection.query(sql, (err, result)=>{
         if(err){
           console.log('ERROR IN ALL PRODUCT' , err);
+          callback(err)
         }else{
           callback(result.rows);
         }
