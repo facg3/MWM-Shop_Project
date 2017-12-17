@@ -1,4 +1,4 @@
-fetch('/products',null,(response)=>{
+fetch('/usercart',null,(response)=>{
   var res =  JSON.parse(response);
   var row = document.getElementById('row');
   res.forEach((element,i) => {
@@ -17,8 +17,9 @@ fetch('/products',null,(response)=>{
     button.setAttribute('class','button');
     button.setAttribute('id','button');
     button.setAttribute('type','submit');
-    button.setAttribute('onclick','addcart('+element.id+')');
-    button.textContent='ADD TO CART';
+    button.setAttribute('onclick','deletecart('+element.product_id+')');
+    button.textContent='Delete From CART';
+    console.log(element);
     name.textContent = element.name;
     price.textContent ="$"+element.price;
     card.appendChild(img);
@@ -32,10 +33,3 @@ fetch('/products',null,(response)=>{
   })
 
 });
-// addListener('#button', 'submit', function(event) {
-//   event.preventDefault();
-//   fetch('/addcart',null,(response)=>{
-//
-// });
-//
-// });

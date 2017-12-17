@@ -16,22 +16,45 @@ const getDataUsers = (cb) => {
       cb(result.rows);
     }
   })
-}
+};
 
 
-const allcarts =(cb)=>{
-  connection.query('SELECT users.name, products.name FROM users JOIN cart ON cart.user_id = users.id JOIN products ON products.id = cart.product_id WHERE users.name = "user"',(errallcarts, result) =>{
-    if(allcarts) console.log('Carts Not Found',errallcarts);
-    else {
-      cb(result.rows);
+const allcarts=  (callback) =>{
+      const sql = 'select * from products inner join cart on cart.product_id = products.id inner join users on cart.user_id=users.id ';
+      connection.query(sql, (err, result)=>{
+        if(err){
+          console.log('ERROR IN Carts' , err);
+        }else{
+          callback(result.rows);
+        }
+      });
+};
+
+const addcart=  (id)=>{
+  const sql = 'insert into cart (user_id,product_id) values(1,'+id+') ';
+  connection.query(sql, (err, result)=>{
+    if(err){
+      console.log('ERROR IN ALL PRODUCT' , err);
+    }else{
+      console.log('Completed Add');
     }
-  })
+  })};
 
-}
-
+const deletecart=  (id) =>{
+  const sql = 'DELETE FROM cart WHERE product_id ='+id;
+    connection.query(sql, (err, result)=>{
+        if(err){
+            console.log('ERROR IN Carts' , err);
+          }else{
+            console.log('Done');
+          }
+        });
+  };
 
 module.exports = {
   allProducts,
   getDataUsers,
-   allcarts
+   allcarts,
+   addcart,
+   deletecart
  };

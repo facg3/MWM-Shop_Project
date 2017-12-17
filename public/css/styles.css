@@ -5,41 +5,97 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+.logo{
+display:inline-block;
+width:50%;
+}
+
+nav{
+display:inline-block;
+width:50%;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index:999;
+}
+
+li {
+    float: right;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+ul span img{
+  width:20px;height: 15px;
+}
+.active {
+    background-color: #115c87;
+}
+
+
+
 
 .column {
   float: left;
-  width: 50%;
+  width: 33.3%;
   padding: 0 8px;
 }
 
-
-.container{
+.col{
   text-align: center;
-}
-@media (max-width: 650px) {
+  font-style: oblique;
+  text-shadow: 5px 3px grey;
+  font-size: 30px;
+  color: #115c87;
 
-  .column {
+}
+
+@media (max-width: 650px) {
+  .row{
     width: 100%;
     display: block;
   }
-
+  .column {
+    width: 100%;
+    display: block;
+    margin: 0;
+  }
 
 }
 
-
-
 .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
   padding: 0 16px;
+}
+
+.container h2{
+  font-size: 18px;
 }
 
 .container::after, .row::after {
   content: "";
   clear: both;
   display: table;
-}
-
-.title {
-  color: #262424;
 }
 
 .button {
@@ -60,7 +116,6 @@ html {
 
 .card img
 {
-  width: 300px;
 	cursor: pointer;
 	display: inline-block;
 	margin-top: 10px;
