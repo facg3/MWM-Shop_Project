@@ -2,6 +2,7 @@ const test = require('tape');
 const shot = require('shot');
 const router = require('./src/router');
 const fs = require('fs');
+const getData=require('./src/database/queries.js')
 
 test("Initialize", (t)=>  {
   let num = 2;
@@ -35,4 +36,13 @@ test("Unknown Pages", (t)=>{
   });
 
 
+});
+
+var data = "[ { id: 1, name: 'Unionbay® Men Westport Sneakers', image: 'images/1.png', size: [ '38', '39', '40' ], price: 50 }, { id: 2, name: 'Rider™ Men R1 Energy Vl Thong Sandals', image: 'images/2.png', size: [ '38', '39', '40' ], price: 70 }, { id: 3, name: 'Sperry® Boys Wahoo JR Sneakers', image: 'images/3.png', size: [ '38', '39', '40' ], price: 30 }, { id: 4, name: 'UGG® 'Olive' Fashion Sneakers', image: 'images/4.png', size: [ '38', '39', '40' ], price: 60 } ]";
+
+test('test all products length' , (t)=>{
+getData.allProducts((res) => {
+t.equal(res.length,9, 'Data Size Should Be 9.');
+t.end();
+});
 });
