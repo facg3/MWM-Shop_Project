@@ -5,14 +5,25 @@ const router = (request, response) => {
   if (url === '/') {
     handlers.homepage(request, response);
   }
+  else if (url.startsWith('/public')) {
+  handlers.handler(request, response);
+}
   else if (url === '/products') {
     handlers.products(request,response);
   }
-    else if (url.startsWith('/public')) {
-    handlers.handler(request, response);
-  } else if (url === '/user') {
+  else if (url === '/addcart') {
+    handlers.addcart(request,response);
+  }
+ else if (url === '/user') {
     handlers.userpage(request,response);
-  } else {
+  }
+  else if (url === '/usercart') {
+     handlers.usercart(request,response);
+   }
+   else if (url === '/deletecart') {
+      handlers.deletecart(request,response);
+    }
+  else {
     response.writeHead(404);
     response.end('PAGE NOT FOUND!!!!!!!!!!');
   }

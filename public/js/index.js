@@ -8,13 +8,24 @@ function fetch(url, data, callback) {
   };
   xhr.open('POST', url);
   if (data) {
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    // console.log('datd'+data);
     xhr.send(data);
   }else {
     xhr.send();
   }
 }
-//
-// if(typeof module !== 'undefined'){
-//   module.exports = getproduct;
-// }
+
+function deletecart(id){
+  // console.log(id);
+  fetch('/deletecart',id,(response)=>{
+    // console.log(response);
+  });
+  window.location.reload();
+}
+
+function addcart(id){
+  // console.log(id);
+  fetch('/addcart',id,(response)=>{
+    // console.log(response);
+  });
+}

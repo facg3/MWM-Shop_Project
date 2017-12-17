@@ -22,7 +22,30 @@ const products = (request, response) =>{
     response.end(JSON.stringify(result));
   })
 };
+const addcart = (request, response) =>{
+  var id = "";
+    request.on('data', function (chunkOfData) {
+        id += chunkOfData;
+    });
+    request.on('end', function () {
+        // console.log(id);
+        queries.addcart(id);
+        response.end('Done Add');
+    });
 
+};
+
+const deletecart = (request, response) =>{
+  var id = "";
+    request.on('data', function (chunkOfData) {
+        id += chunkOfData;
+    });
+    request.on('end', function () {
+        // console.log(id);
+        queries.deletecart(id);
+        response.end('Done Delete');
+    });
+};
 
 const handler = (request, response) => {
   const url = request.url;
@@ -60,10 +83,20 @@ const userpage = (request, response) => {
   });
 };
 
+const usercart = (request, response) =>{
+  queries.allcarts((result) =>{
+    // console.log(result.rows);
+    response.end(JSON.stringify(result));
+  })
+};
+
 
 module.exports = {
   homepage,
   handler,
   products,
-  userpage
+  addcart,
+  deletecart,
+  userpage,
+  usercart
 };
