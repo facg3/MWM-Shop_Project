@@ -15,11 +15,9 @@ var index = fs.readFile(process.cwd()+'/'+'public/index.html','UTF-8' ,(err,cont
   if(err){
     process.stdout.write('The file doesn\'t exist')
   }else{
-    // console.log(contentFile);
     index=contentFile;
   }
 });
-// Home Route
 test('Home route', (t) => {
   shot.inject(router, { method: 'get', url: '/' }, (res) => {
     t.equal(res.statusCode, 200, 'should respond with status code of 200');
@@ -45,4 +43,5 @@ getData.allProducts((res) => {
 t.equal(res.length,9, 'Data Size Should Be 9.');
 t.end();
 });
+
 });
