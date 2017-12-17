@@ -5,7 +5,7 @@ const allProducts=  (callback) =>{
         if(err){
           console.log('ERROR IN ALL PRODUCT' , err);
         }else{
-          callback(result.rows);
+          callback(null,result.rows);
         }
       });
 };
@@ -13,7 +13,7 @@ const getDataUsers = (cb) => {
   connection.query(`SELECT * FROM users`,(errgetUsers,result) =>{
     if(errgetUsers) console.log('User Not Found',errgetUsers);
     else {
-      cb(result.rows);
+      cb(null,result.rows);
     }
   })
 };
@@ -25,7 +25,7 @@ const allcarts=  (callback) =>{
         if(err){
           console.log('ERROR IN Carts' , err);
         }else{
-          callback(result.rows);
+          callback(null,result.rows);
         }
       });
 };
