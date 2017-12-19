@@ -82,10 +82,19 @@ const userpage = (request, response) => {
     }
   });
 };
-
+const loginpage = (request, response) => {
+  fs.readFile(path.join(__dirname, '..', 'public', 'login.html'), (err, file) => {
+    if (err) {
+      response.writeHead(500, { 'content-type': 'text/html' });
+      response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
+    } else {
+      response.writeHead(200, { 'content-type' : 'text/html' });
+      response.end(file);
+    }
+  });
+};
 const usercart = (request, response) =>{
   queries.allcarts((result) =>{
-    // console.log(result.rows);
     response.end(JSON.stringify(result));
   })
 };
@@ -98,5 +107,6 @@ module.exports = {
   addcart,
   deletecart,
   userpage,
+  loginpage,
   usercart
 };

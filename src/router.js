@@ -22,7 +22,9 @@ const router = (request, response) => {
    }
    else if (url === '/deletecart') {
       handlers.deletecart(request,response);
-    }
+  }else if (url === '/login') {
+      handlers.loginpage(request,response);
+  }
   else {
     response.writeHead(404);
     response.end('PAGE NOT FOUND!!!!!!!!!!');

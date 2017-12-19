@@ -9,7 +9,9 @@ html {
 display:inline-block;
 width:50%;
 }
-
+body{
+  margin: 0px;
+}
 nav{
 display:inline-block;
 width:50%;
