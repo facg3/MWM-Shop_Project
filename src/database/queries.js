@@ -32,7 +32,7 @@ const allcarts=  (callback) =>{
 };
 
 const addcart=  (id)=>{
-  const sql = 'insert into cart (user_id,product_id) values(1,'+id+') ';
+  const sql = 'insert into cart (user_id,product_id) values(6,'+id+') ';
   connection.query(sql, (err, result)=>{
     if(err){
       console.log('ERROR IN ALL PRODUCT' , err);
