@@ -22,7 +22,10 @@ const router = (request, response) => {
     handlers.loginuser(request , response);
   } else if (url === '/logout') {
     handlers.logoutuser(request , response);
-  } else {
+  } else if (url === '/admin'){
+    handlers.adminpage(request , response);
+  }
+  else {
     response.writeHead(404);
     response.end('PAGE NOT FOUND!!!!!!!!!!');
   }
