@@ -10,7 +10,7 @@ test('Initialize', t => {
   t.end();
 });
 
-let index = fs.readFile(`${process.cwd()}/`+'public/index.html','UTF-8' ,(err,contentFile) => {
+var index = fs.readFile(`${process.cwd()}/`+'public/index.html','UTF-8' ,(err,contentFile) => {
   if (err) {
     process.stdout.write(' The file doesn\'t exist');
   } else {
