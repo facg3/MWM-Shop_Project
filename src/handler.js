@@ -1,50 +1,99 @@
-const req = require('request');
 const fs = require('fs');
 const path = require('path');
 const queries = require('./database/queries');
 const loginqueries = require('./database/login-queries');
+const jwt = require('jsonwebtoken');
+require('env2')('config.env');
+const cookie = require('cookie');
+let token;
+const adminpage = (request, response) => {
+  if (request.headers.cookie) {
+    fs.readFile(path.join(__dirname, '..', 'public', 'admin.html'), (err, file) => {
+      if (err) {
+        response.writeHead(500, {
+          'content-type': 'text/html'
+        });
+        response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+      } else {
+        response.writeHead(200, {
+          'content-type': 'text/html'
+        });
+
+        response.end(file);
+      }
+
+    });
+  } else {
+    response.writeHead(302, {
+      'Location': '/'
+    });
+    response.end();
+  }
+
+};
 const homepage = (request, response) => {
-  fs.readFile(path.join(__dirname, '..', 'public', 'index.html'), (err, file) => {
-    if (err) {
-      response.writeHead(500, {
-        'content-type': 'text/html'
-      });
-      response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
-    } else {
-      response.writeHead(200, {
-        'content-type': 'text/html'
-      });
+  if (request.headers.cookie) {
+    fs.readFile(path.join(__dirname, '..', 'public', 'index.html'), (err, file) => {
+      if (err) {
+        response.writeHead(500, {
+          'content-type': 'text/html'
+        });
+        response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+      } else {
+        response.writeHead(200, {
+          'content-type': 'text/html'
+        });
 
-      response.end(file);
-    }
+        response.end(file);
+      }
 
-  });
+    });
+  } else {
+    response.writeHead(302, {
+      'Location': '/'
+    });
+    response.end();
+  }
 
 };
 const products = (request, response) => {
-  queries.allProducts((result) => {
-    response.end(JSON.stringify(result));
-  })
+  if (request.headers.cookie) {
+    queries.allProducts(result => {
+      response.end(JSON.stringify(result));
+    });
+  } else {
+    response.writeHead(302, {
+      'Location': '/'
+    });
+    response.end();
+  }
 };
 const addcart = (request, response) => {
-  var id = "";
-  request.on('data', function(chunkOfData) {
-    id += chunkOfData;
-  });
-  request.on('end', function() {
-    // console.log(id);
-    queries.addcart(id);
-    response.end('Done Add');
-  });
-
+  if (request.headers.cookie) {
+    let id = '';
+    request.on('data', chunkOfData => {
+      id += chunkOfData;
+    });
+    request.on('end', () => {
+      // console.log(id);
+      queries.addcart(id);
+      response.end('Done Add');
+    });
+  } else {
+    response.writeHead(302, {
+      'Location': '/'
+    });
+    response.end();
+  }
 };
 
+
 const deletecart = (request, response) => {
-  var id = "";
-  request.on('data', function(chunkOfData) {
+  let id = '';
+  request.on('data', chunkOfData => {
     id += chunkOfData;
   });
-  request.on('end', function() {
+  request.on('end', () => {
     // console.log(id);
     queries.deletecart(id);
     response.end('Done Delete');
@@ -69,7 +118,7 @@ const handler = (request, response) => {
       response.writeHead(500, {
         'content-type': 'text/html'
       });
-      response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
+      response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
     } else {
       response.writeHead(200, `Content-Type:${filetype[extension]}`);
       response.end(file);
@@ -78,19 +127,46 @@ const handler = (request, response) => {
 };
 
 const userpage = (request, response) => {
-  fs.readFile(path.join(__dirname, '..', 'public', 'user.html'), (err, file) => {
-    if (err) {
-      response.writeHead(500, {
-        'content-type': 'text/html'
-      });
-      response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
-    } else {
-      response.writeHead(200, {
-        'content-type': 'text/html'
-      });
-      response.end(file);
-    }
-  });
+  var obj = cookie.parse(request.headers.cookie);
+  // console.log(Object.keys(obj));
+  if (obj.accessToken) {
+    jwt.verify(obj.accessToken, process.env.SECRET_COOKIE, (err, decoded) => {
+      if (decoded.role === 'user') {
+        fs.readFile(path.join(__dirname, '..', 'public', 'user.html'), (err, file) => {
+          if (err) {
+            response.writeHead(500, {
+              'content-type': 'text/html'
+            });
+            response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+          } else {
+            response.writeHead(200, {
+              'content-type': 'text/html'
+            });
+            response.end(file);
+          }
+        });
+      } else {
+        fs.readFile(path.join(__dirname, '..', 'public', 'admin.html'), (err, file) => {
+          if (err) {
+            response.writeHead(500, {
+              'content-type': 'text/html'
+            });
+            response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+          } else {
+            response.writeHead(200, {
+              'content-type': 'text/html'
+            });
+            response.end(file);
+          }
+        });
+      }
+    });
+  } else {
+    response.writeHead(302, {
+      'Location': '/'
+    });
+    response.end();
+  }
 };
 const loginpage = (request, response) => {
   fs.readFile(path.join(__dirname, '..', 'public', 'login.html'), (err, file) => {
@@ -98,7 +174,7 @@ const loginpage = (request, response) => {
       response.writeHead(500, {
         'content-type': 'text/html'
       });
-      response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
+      response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
     } else {
       response.writeHead(200, {
         'content-type': 'text/html'
@@ -108,33 +184,57 @@ const loginpage = (request, response) => {
   });
 };
 const usercart = (request, response) => {
-  queries.allcarts((result) => {
+  queries.allcarts(result => {
     response.end(JSON.stringify(result));
-  })
+  });
 };
 const loginuser = (request, response) => {
-  var data = "";
-  request.on("data", function(chunkOfData) {
+  let data = '';
+  request.on('data', chunkOfData => {
     data += chunkOfData;
   });
-  request.on('end', function() {
+  request.on('end', () => {
     data = JSON.parse(data);
-    loginqueries.login(data, (result) => {
-      console.log(typeof result);
+    loginqueries.login(data, result => {
       if (result.length === 0) {
-        response.end('Error in username or password')
-      }else{
-        response.writeHead(200 , {'content-type':'text/plain'});
-        response.end('/');
+        response.end('Error in username or password');
+      } else {
+        const userData = {
+          id: result[0].id,
+          name: result[0].name,
+          role: result[0].role
+        }
+        console.log(userData.role);
+        if (userData.role === 'admin') {
+          token = jwt.sign(userData, process.env.SECRET_COOKIE);
+          response.writeHead(200, {
+            'content-type': 'text/plain',
+            'Set-Cookie': `accessToken=${token}`
+          });
+          response.end('/admin');
+        } else {
+          token = jwt.sign(userData, process.env.SECRET_COOKIE);
+          response.writeHead(200, {
+            'content-type': 'text/plain',
+            'Set-Cookie': `accessToken=${token}`
+          });
+          response.end('/home');
+        }
       }
     });
-
-
   });
+};
+
+
+const logoutuser = (request, response) => {
+  response.writeHead(302, {
+    'Location': '/',
+    'Set-Cookie': 'accessToken=0;Max-Age=0'
+  });
+  response.end();
 }
-
-
 module.exports = {
+  adminpage,
   homepage,
   handler,
   products,
@@ -142,6 +242,7 @@ module.exports = {
   deletecart,
   userpage,
   loginpage,
+  logoutuser,
   usercart,
   loginuser
 };

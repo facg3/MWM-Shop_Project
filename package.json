@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/facg3/Let-s-Have-Fun#readme",
   "devDependencies": {
+    "cookie": "^0.3.1",
     "eslint": "^4.12.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "env2": "^2.2.0",
+    "jsonwebtoken": "^8.1.0",
     "pg": "^7.4.0",
     "request": "^2.83.0"
   }
