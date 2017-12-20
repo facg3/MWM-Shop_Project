@@ -2,14 +2,18 @@ const req = require('request');
 const fs = require('fs');
 const path = require('path');
 const queries = require('./database/queries');
-
+const loginqueries = require('./database/login-queries');
 const homepage = (request, response) => {
   fs.readFile(path.join(__dirname, '..', 'public', 'index.html'), (err, file) => {
     if (err) {
-      response.writeHead(500, { 'content-type': 'text/html' });
+      response.writeHead(500, {
+        'content-type': 'text/html'
+      });
       response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
     } else {
-      response.writeHead(200, { 'content-type': 'text/html' });
+      response.writeHead(200, {
+        'content-type': 'text/html'
+      });
 
       response.end(file);
     }
@@ -17,34 +21,34 @@ const homepage = (request, response) => {
   });
 
 };
-const products = (request, response) =>{
-  queries.allProducts((result) =>{
+const products = (request, response) => {
+  queries.allProducts((result) => {
     response.end(JSON.stringify(result));
   })
 };
-const addcart = (request, response) =>{
+const addcart = (request, response) => {
   var id = "";
-    request.on('data', function (chunkOfData) {
-        id += chunkOfData;
-    });
-    request.on('end', function () {
-        // console.log(id);
-        queries.addcart(id);
-        response.end('Done Add');
-    });
+  request.on('data', function(chunkOfData) {
+    id += chunkOfData;
+  });
+  request.on('end', function() {
+    // console.log(id);
+    queries.addcart(id);
+    response.end('Done Add');
+  });
 
 };
 
-const deletecart = (request, response) =>{
+const deletecart = (request, response) => {
   var id = "";
-    request.on('data', function (chunkOfData) {
-        id += chunkOfData;
-    });
-    request.on('end', function () {
-        // console.log(id);
-        queries.deletecart(id);
-        response.end('Done Delete');
-    });
+  request.on('data', function(chunkOfData) {
+    id += chunkOfData;
+  });
+  request.on('end', function() {
+    // console.log(id);
+    queries.deletecart(id);
+    response.end('Done Delete');
+  });
 };
 
 const handler = (request, response) => {
@@ -62,7 +66,9 @@ const handler = (request, response) => {
 
   fs.readFile(path.join(__dirname, '..', url), (err, file) => {
     if (err) {
-      response.writeHead(500, { 'content-type': 'text/html' });
+      response.writeHead(500, {
+        'content-type': 'text/html'
+      });
       response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
     } else {
       response.writeHead(200, `Content-Type:${filetype[extension]}`);
@@ -74,10 +80,14 @@ const handler = (request, response) => {
 const userpage = (request, response) => {
   fs.readFile(path.join(__dirname, '..', 'public', 'user.html'), (err, file) => {
     if (err) {
-      response.writeHead(500, { 'content-type': 'text/html' });
+      response.writeHead(500, {
+        'content-type': 'text/html'
+      });
       response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
     } else {
-      response.writeHead(200, { 'content-type' : 'text/html' });
+      response.writeHead(200, {
+        'content-type': 'text/html'
+      });
       response.end(file);
     }
   });
@@ -85,19 +95,43 @@ const userpage = (request, response) => {
 const loginpage = (request, response) => {
   fs.readFile(path.join(__dirname, '..', 'public', 'login.html'), (err, file) => {
     if (err) {
-      response.writeHead(500, { 'content-type': 'text/html' });
+      response.writeHead(500, {
+        'content-type': 'text/html'
+      });
       response.end("<h1 style = 'text-align: center;'>SERVER ERROR</h1>");
     } else {
-      response.writeHead(200, { 'content-type' : 'text/html' });
+      response.writeHead(200, {
+        'content-type': 'text/html'
+      });
       response.end(file);
     }
   });
 };
-const usercart = (request, response) =>{
-  queries.allcarts((result) =>{
+const usercart = (request, response) => {
+  queries.allcarts((result) => {
     response.end(JSON.stringify(result));
   })
 };
+const loginuser = (request, response) => {
+  var data = "";
+  request.on("data", function(chunkOfData) {
+    data += chunkOfData;
+  });
+  request.on('end', function() {
+    data = JSON.parse(data);
+    loginqueries.login(data, (result) => {
+      console.log(typeof result);
+      if (result.length === 0) {
+        response.end('Error in username or password')
+      }else{
+        response.writeHead(200 , {'content-type':'text/plain'});
+        response.end('/');
+      }
+    });
+
+
+  });
+}
 
 
 module.exports = {
@@ -108,5 +142,6 @@ module.exports = {
   deletecart,
   userpage,
   loginpage,
-  usercart
+  usercart,
+  loginuser
 };

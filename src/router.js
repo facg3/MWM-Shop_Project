@@ -25,6 +25,9 @@ const router = (request, response) => {
   }else if (url === '/login') {
       handlers.loginpage(request,response);
   }
+  else if(url === '/loginuser'){
+    handlers.loginuser(request , response);
+  }
   else {
     response.writeHead(404);
     response.end('PAGE NOT FOUND!!!!!!!!!!');
