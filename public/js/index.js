@@ -10,34 +10,27 @@ function fetch(url, data, callback) {
   if (data) {
 
     xhr.send(data);
-  }else {
+  } else {
     xhr.send();
   }
 }
 
-function deletecart(id){
-
-  fetch('/deletecart',id,(response)=>{
-
+function deletecart(id) {
+  fetch('/deletecart',id,response => {
   });
   window.location.reload();
 }
 
-function addcart(id){
-
-  fetch('/addcart',id,(response)=>{
-
+function addcart(id) {
+  fetch('/addcart',id,response => {
   });
-
 }
-function login(d,cb){
-  fetch('/loginuser',d,(response)=>{
-    if (response === "Error in username or password") {
-      cb(response)
-    }
-    else {
-    window.location.pathname=response;
-    
+function login(d,cb) {
+  fetch('/loginuser',d,response => {
+    if (response === 'Error in username or password') {
+      cb(response);
+    } else {
+      window.location.pathname=response;
     }
   });
 }

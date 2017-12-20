@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "env2": "^2.2.0",
+    "jsonwebtoken": "^8.1.0",
     "pg": "^7.4.0",
     "request": "^2.83.0"
   }
