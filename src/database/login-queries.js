@@ -1,6 +1,37 @@
 const connection = require("./dbconnection");
 const crypto = require('crypto');
-const secret = 'mwm';
+require('env2')('config.env');
+const login=  (data,callback) =>{
+    var pass=crypto.createHmac('SHA256',process.env.SECRET_PASSWORD).update(data.password).digest('hex');
+    console.log(pass);
+      const sql = `select * from users where name = '${data.username}' and password='${pass}'`
+      connection.query(sql, (err, result)=>{
+        if(err){
+          console.log('ERROR IN Carts' , err);
+        }else{
+          callback(result.rows);
+        }
+      });
+};
+module.exports = {
+  login
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // const passwordAdmin = crypto.createHmac('SHA256',secret).update('mwm123456').digest('hex');
 // console.log('Admin password :'+passwordAdmin); // e2454cb8d0b09f0080bae8f0f600137b677b585ab5814497861aeda53b7f7cb3
 // const passwordUser=crypto.createHmac('SHA256',secret).update('123456').digest('hex');
@@ -30,20 +61,3 @@ const secret = 'mwm';
 //       console.log('Adding Successful');
 //     }
 // });
-
-
-const login=  (data,callback) =>{
-    var pass=crypto.createHmac('SHA256',secret).update(data.password).digest('hex');
-    console.log(pass);
-      const sql = `select * from users where name = '${data.username}' and password='${pass}'`
-      connection.query(sql, (err, result)=>{
-        if(err){
-          console.log('ERROR IN Carts' , err);
-        }else{
-          callback(result.rows);
-        }
-      });
-};
-module.exports = {
-  login
-}
