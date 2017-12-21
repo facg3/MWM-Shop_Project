@@ -1,60 +1,88 @@
-const fs = require('fs'); 
+const fs = require('fs');
 const path = require('path');
 const queries = require('./database/queries');
 const loginqueries = require('./database/login-queries');
 const jwt = require('jsonwebtoken');
 require('env2')('config.env');
 const cookie = require('cookie');
-let token;
+
 const adminpage = (request, response) => {
-  if (request.headers.cookie) {
-    fs.readFile(path.join(__dirname, '..', 'public', 'admin.html'), (err, file) => {
-      if (err) {
+  const obj = cookie.parse(request.headers.cookie);
+  if(obj.accessToken){
+    jwt.verify(obj.accessToken,process.env.SECRET_COOKIE,(err,decoded)=>{
+      if(decoded.role === 'admin'){
+        fs.readFile(path.join(__dirname, '..', 'public', 'admin.html'), (err, file) => {
+          if (err) {
+            response.writeHead(500, {
+              'content-type': 'text/html'
+            });
+            response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+          } else {
+            response.writeHead(200, {
+              'content-type': 'text/html'
+            });
+
+            response.end(file);
+          }
+
+        });
+      }  else {
         response.writeHead(500, {
           'content-type': 'text/html'
         });
-        response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
-      } else {
-        response.writeHead(200, {
-          'content-type': 'text/html'
-        });
-
-        response.end(file);
-      }
-
-    });
-  } else {
-    response.writeHead(302, {
-      'Location': '/'
-    });
+        response.end('<h1 style = \'text-align: center;\'>Page Not found</h1>');
+        }
+    })
+  }
+  else {
+    response.writeHead(302,{'Location':'/'});
     response.end();
   }
-
 };
 const homepage = (request, response) => {
-  if (request.headers.cookie) {
-    fs.readFile(path.join(__dirname, '..', 'public', 'index.html'), (err, file) => {
-      if (err) {
-        response.writeHead(500, {
-          'content-type': 'text/html'
-        });
-        response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
-      } else {
-        response.writeHead(200, {
-          'content-type': 'text/html'
-        });
+  const obj = cookie.parse(request.headers.cookie);
+  if(obj.accessToken){
+    jwt.verify(obj.accessToken,process.env.SECRET_COOKIE,(err,decoded)=>{
+      if(decoded.role === 'admin'){
+        fs.readFile(path.join(__dirname, '..', 'public', 'admin.html'), (err, file) => {
+          if (err) {
+            response.writeHead(500, {
+              'content-type': 'text/html'
+            });
+            response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+          } else {
+            response.writeHead(200, {
+              'content-type': 'text/html'
+            });
 
-        response.end(file);
-      }
+            response.end(file);
+          }
 
-    });
+        });
+      }  else {
+        fs.readFile(path.join(__dirname, '..', 'public', 'index.html'), (err, file) => {
+          if (err) {
+            response.writeHead(500, {
+              'content-type': 'text/html'
+            });
+            response.end('<h1 style = \'text-align: center;\'>SERVER ERROR</h1>');
+          } else {
+            response.writeHead(200, {
+              'content-type': 'text/html'
+            });
+
+            response.end(file);
+          }
+
+        });
+        }
+    })
   } else {
     response.writeHead(302, {
       'Location': '/'
     });
     response.end();
   }
-
 };
 const products = (request, response) => {
   if (request.headers.cookie) {
@@ -86,8 +114,6 @@ const addcart = (request, response) => {
     response.end();
   }
 };
-
-
 const deletecart = (request, response) => {
   let id = '';
   request.on('data', chunkOfData => {
@@ -99,7 +125,6 @@ const deletecart = (request, response) => {
     response.end('Done Delete');
   });
 };
-
 const handler = (request, response) => {
   const url = request.url;
   const extension = url.split('.')[1];
@@ -125,7 +150,6 @@ const handler = (request, response) => {
     }
   });
 };
-
 const userpage = (request, response) => {
   var obj = cookie.parse(request.headers.cookie);
   // console.log(Object.keys(obj));
@@ -204,28 +228,21 @@ const loginuser = (request, response) => {
           name: result[0].name,
           role: result[0].role
         }
-        console.log(userData.role);
+        token = jwt.sign(userData, process.env.SECRET_COOKIE);
+          response.writeHead(200, {
+            'content-type': 'text/plain',
+            'Set-Cookie': `accessToken=${token}`
+          });
+
         if (userData.role === 'admin') {
-          token = jwt.sign(userData, process.env.SECRET_COOKIE);
-          response.writeHead(200, {
-            'content-type': 'text/plain',
-            'Set-Cookie': `accessToken=${token}`
-          });
-          response.end('/admin');
-        } else {
-          token = jwt.sign(userData, process.env.SECRET_COOKIE);
-          response.writeHead(200, {
-            'content-type': 'text/plain',
-            'Set-Cookie': `accessToken=${token}`
-          });
+           response.end('/admin');
+         } else {
           response.end('/home');
         }
       }
     });
   });
 };
-
-
 const logoutuser = (request, response) => {
   response.writeHead(302, {
     'Location': '/',

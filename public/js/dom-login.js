@@ -3,9 +3,8 @@ const btn = document.getElementById('btn');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
 const p = document.createElement('p');
-
-btn.addEventListener('click', event => {
-
+// const body = document.querySelector('body');
+function allwork() {
   if ((username.value.trim() === '') || (password.value.trim() === '')) {
     p.textContent = 'Fill All inputs to login please!';
     div.appendChild(p);
@@ -23,4 +22,12 @@ btn.addEventListener('click', event => {
     p.textContent = '';
 
   }
+}
+btn.addEventListener('click', event => {
+  allwork();
 });
+function keyy() {
+  if(event.keyCode == 13 ){
+    allwork();
+  }
+}
